@@ -28,5 +28,12 @@ public class FakeStoreClient {
         return List.of(productResponseList.getBody());
     }
 
+    public FakeStoreProductResponseDTO getProductById(int id){
+        String fakeStoreGetProductURL = fakeStoreAPIBaseURL.concat(fakeStoreProductPath).concat("/"+id);
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreProductResponseDTO> productResponse = restTemplate.getForEntity(fakeStoreGetProductURL,FakeStoreProductResponseDTO.class);
+        return productResponse.getBody();
+    }
+
 
 }
