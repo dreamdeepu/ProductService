@@ -7,6 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import productservicepro.dto.FakeStoreCartResponseDTO;
 import productservicepro.dto.FakeStoreProductResponseDTO;
 import productservicepro.dto.ProductResponseDTO;
 
@@ -21,6 +22,9 @@ public class FakeStoreClient {
     @Value("${fakeStore.api.product.path}")
     private String fakeStoreProductPath;
 
+    @Value("${fakestore.api.cart.for.user.path}")
+    private String fakeStoreAPICartForUser;
+
     public List<FakeStoreProductResponseDTO> getAllProducts(){
         String fakeStoreGetAllProductsURL = fakeStoreAPIBaseURL.concat(fakeStoreProductPath);
         RestTemplate restTemplate = restTemplateBuilder.build();
@@ -33,6 +37,16 @@ public class FakeStoreClient {
         RestTemplate restTemplate = restTemplateBuilder.build();
         ResponseEntity<FakeStoreProductResponseDTO> productResponse = restTemplate.getForEntity(fakeStoreGetProductURL,FakeStoreProductResponseDTO.class);
         return productResponse.getBody();
+    }
+
+    public List<FakeStoreCartResponseDTO> getCartByUserId(int userId){
+        if(userId<1){
+            return null;
+        }
+        String fakeStoreGetCartForUser = fakeStoreAPIBaseURL.concat(fakeStoreAPICartForUser).concat(String.valueOf(userId));
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<FakeStoreCartResponseDTO[]> cartResponse = restTemplate.getForEntity(fakeStoreGetCartForUser, FakeStoreCartResponseDTO[].class);
+        return List.of(cartResponse.getBody());
     }
 
 
