@@ -9,7 +9,7 @@ import productservicepro.entity.Product;
 
 import java.util.List;
 
-@Service
+@Service("fakestore")
 public class FakeStoreProductServiceImpl implements  ProductService{
 
     @Autowired

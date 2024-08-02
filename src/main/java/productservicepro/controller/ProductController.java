@@ -1,10 +1,9 @@
 package productservicepro.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import productservicepro.dto.FakeStoreProductResponseDTO;
 import productservicepro.entity.Product;
 import productservicepro.service.ProductService;
@@ -15,6 +14,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
+    @Qualifier("productServiceImpl")
     private ProductService productService;
 
     @GetMapping("/product")
@@ -27,5 +27,11 @@ public class ProductController {
     public ResponseEntity getProductById(@PathVariable("id") int id){
         FakeStoreProductResponseDTO product = productService.getProduct(id);
         return ResponseEntity.ok(product);
+    }
+
+    @PostMapping("/productSave")
+    public ResponseEntity createProduct(@RequestBody Product product){
+        Product savedProduct = productService.createProduct(product);
+        return ResponseEntity.ok(savedProduct);
     }
 }
